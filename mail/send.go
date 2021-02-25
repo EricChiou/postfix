@@ -104,15 +104,15 @@ func send(data sendData, msg string) error {
 		return errors.New("w.Close: " + err.Error())
 	}
 
-	err = c.Close()
-	if err != nil {
-		return errors.New("c.Close: " + err.Error())
-	}
-
-	// err = c.Quit()
+	// err = c.Close()
 	// if err != nil {
-	// 	return errors.New("c.Quit: " + err.Error())
+	// 	return errors.New("c.Close: " + err.Error())
 	// }
+
+	err = c.Quit()
+	if err != nil {
+		return errors.New("c.Quit: " + err.Error())
+	}
 
 	return nil
 }
