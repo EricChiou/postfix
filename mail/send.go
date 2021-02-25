@@ -78,7 +78,7 @@ func send(data sendData, msg string) error {
 		return err
 	}
 
-	if err = c.Mail(data.FromHeader); err != nil {
+	if err = c.Mail(data.FromEmail.Email); err != nil {
 		return err
 	}
 

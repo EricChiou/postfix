@@ -11,6 +11,7 @@ import (
 type sendData struct {
 	FromHeader string
 	ToHeader   string
+	FromEmail  req.EmailData
 	ToEmails   []req.EmailData
 	Subject    string
 }
@@ -33,6 +34,9 @@ func getSendData(mailData req.SendMailData) (sendData, error) {
 	if len(mailData.Subject) == 0 {
 		return h, errors.New("subject can not be empty")
 	}
+
+	h.FromEmail = mailData.From
+	h.ToEmails = mailData.To
 	h.Subject = mailData.Subject
 
 	return h, nil
