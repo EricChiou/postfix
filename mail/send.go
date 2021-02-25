@@ -2,7 +2,6 @@ package mail
 
 import (
 	"encoding/json"
-	"errors"
 	"net/smtp"
 	"postfix/apihandler"
 	req "postfix/vo/request"
@@ -76,42 +75,37 @@ func combineMsg() {
 func send(data sendData, msg string) error {
 	c, err := smtp.Dial(addr)
 	if err != nil {
-		return errors.New("smtp.Dial: " + err.Error())
+		return err
 	}
 
 	if err = c.Mail(data.FromEmail.Email); err != nil {
-		return errors.New("c.Mail: " + err.Error())
+		return err
 	}
 
 	for _, emailData := range data.ToEmails {
 		if err = c.Rcpt(emailData.Email); err != nil {
-			return errors.New("c.Rcpt: " + err.Error())
+			return err
 		}
 	}
 
 	w, err := c.Data()
 	if err != nil {
-		return errors.New("c.Data: " + err.Error())
+		return err
 	}
 
 	_, err = w.Write([]byte(msg))
 	if err != nil {
-		return errors.New("w.Write: " + err.Error())
+		return err
 	}
 
 	err = w.Close()
 	if err != nil {
-		return errors.New("w.Close: " + err.Error())
+		return err
 	}
-
-	// err = c.Close()
-	// if err != nil {
-	// 	return errors.New("c.Close: " + err.Error())
-	// }
 
 	err = c.Quit()
 	if err != nil {
-		return errors.New("c.Quit: " + err.Error())
+		return err
 	}
 
 	return nil
